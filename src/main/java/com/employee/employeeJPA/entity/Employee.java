@@ -5,13 +5,15 @@ import java.util.*;
 
 @Entity
 public class Employee {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String name;
-    @OneToMany
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
     @ManyToOne
     private Department department;
-    @OneToMany
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Skill> skills;
 }
