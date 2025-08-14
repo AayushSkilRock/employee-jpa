@@ -94,6 +94,10 @@ public class EmployeeService {
         return employeeRepository.findBySkillsId(id);
     }
 
+    public Skill getSkillByName(String skillName) {
+        return skillRepository.findBySkillName(skillName);
+    }
+
     public Skill addSkill(Skill skill) {
         return skillRepository.save(skill);
     }

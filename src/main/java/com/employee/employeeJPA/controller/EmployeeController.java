@@ -3,6 +3,8 @@ package com.employee.employeeJPA.controller;
 import com.employee.employeeJPA.entity.Employee;
 import com.employee.employeeJPA.entity.Skill;
 import com.employee.employeeJPA.service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,8 +52,15 @@ public class EmployeeController {
 
 
     @PostMapping("/skills")
-    public Skill addSkill(@RequestBody Skill skill) {
-        return employeeService.addSkill(skill);
+    public ResponseEntity<?> addSkill(@RequestBody Skill skill) {
+        Skill existingSkill = employeeService.getSkillByName(skill.getSkillName());
+        if (existingSkill != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Skill with name '" + skill.getSkillName() + "' already exists.");
+        }
+        Skill savedSkill = employeeService.addSkill(skill);
+        return ResponseEntity.ok(savedSkill);
     }
 
 
