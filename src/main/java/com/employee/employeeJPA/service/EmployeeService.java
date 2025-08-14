@@ -8,6 +8,8 @@ import com.employee.employeeJPA.repository.AddressRepository;
 import com.employee.employeeJPA.repository.DepartmentRepository;
 import com.employee.employeeJPA.repository.EmployeeRepository;
 import com.employee.employeeJPA.repository.SkillRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -100,6 +102,11 @@ public class EmployeeService {
 
     public Skill addSkill(Skill skill) {
         return skillRepository.save(skill);
+    }
+
+
+    public Page<Employee> getAllEmployees(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
     }
 }
 

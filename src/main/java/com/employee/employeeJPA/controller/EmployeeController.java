@@ -3,6 +3,10 @@ package com.employee.employeeJPA.controller;
 import com.employee.employeeJPA.entity.Employee;
 import com.employee.employeeJPA.entity.Skill;
 import com.employee.employeeJPA.service.EmployeeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +66,21 @@ public class EmployeeController {
         Skill savedSkill = employeeService.addSkill(skill);
         return ResponseEntity.ok(savedSkill);
     }
+
+    @GetMapping("/employees")
+    public Page<Employee> getEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
+
+        return employeeService.getAllEmployees(pageable);
+    }
+
+
 
 
 }
